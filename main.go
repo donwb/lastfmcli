@@ -16,10 +16,12 @@ func main() {
 
 	api := lastfm.New(apikey, apisecret)
 
-	res, _ := api.Artist.GetTopTracks(lastfm.P{"artist": "Avicii"}) //discarding error
-	for _, track := range res.Tracks {
-		fmt.Println(track.Name)
-	}
+	/*
+		res, _ := api.Artist.GetTopTracks(lastfm.P{"artist": "Avicii"}) //discarding error
+		for _, track := range res.Tracks {
+			fmt.Println(track.Name)
+		}
+	*/
 
 	fmt.Println("---------------------")
 
@@ -32,6 +34,23 @@ func main() {
 	lastTrackPlayTime := userResult.Tracks[0].Date.Uts
 	fmt.Println("Is Playing: ", isPlaying)
 	fmt.Println("Last Date: ", lastTrackPlayTime)
+
+	mbid := userResult.Tracks[0].Mbid
+	fmt.Println("Mbid: ", mbid)
+
+	fmt.Println("========================")
+	fmt.Println("========================")
+	// for some reason the LastFM api isn't propigating username context
+	// this was to see if I could get my playcount, but it's only sending overall count
+	currentArtist := userResult.Tracks[0].Artist
+	currentTrack := userResult.Tracks[0].Name
+
+	trackResult, _ := api.Track.GetInfo(lastfm.P{"artist": currentArtist, "track": currentTrack, "username": "dbrowning"})
+
+	fmt.Println("Track Info: ", trackResult.PlayCount)
+
+	fmt.Println("========================")
+	fmt.Println("========================")
 
 	minsSinceLastTrack := calcLastTrackTime(lastTrackPlayTime)
 	fmt.Println("Minutes since last track: ", minsSinceLastTrack)
