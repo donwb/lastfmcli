@@ -28,6 +28,7 @@ func main() {
 	userResult, _ := api.User.GetRecentTracks(lastfm.P{"user": "dbrowning"})
 	for _, track := range userResult.Tracks {
 		fmt.Println(track.Artist.Mbid + "    " + track.Name)
+		fmt.Println(track.Album.Name)
 	}
 
 	isPlaying := userResult.Tracks[0].NowPlaying
